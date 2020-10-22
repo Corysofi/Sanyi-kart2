@@ -21,7 +21,7 @@ public class WheelSkid : MonoBehaviour {
 
 	const float SKID_FX_SPEED = 0.5f; // Min side slip speed in m/s to start showing a skid
 	const float MAX_SKID_INTENSITY = 20.0f; // m/s where skid opacity is at full intensity
-	const float WHEEL_SLIP_MULTIPLIER = 10.0f; // For wheelspin. Adjust how much skids show
+	const float WHEEL_SLIP_MULTIPLIER = 5.0f; // For wheelspin. Adjust how much skids show, tenia 10
 	int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
 	float lastFixedUpdateTime;
 
