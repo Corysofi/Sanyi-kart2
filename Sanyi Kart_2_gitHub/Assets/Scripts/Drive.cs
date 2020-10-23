@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Drive : MonoBehaviour
 {
@@ -26,6 +28,9 @@ public class Drive : MonoBehaviour
     int currentGear = 1;
     float currentGearPerc;
     public float maxSpeed = 200;
+    public GameObject playerNamePrefab;
+    public Renderer carMesh;
+    string[] aiNames = { "Cory", "Eva" };
 
 
    
@@ -57,10 +62,17 @@ public class Drive : MonoBehaviour
         for(int i =0;i<4;i++)
         {
             skidSmoke[i] = Instantiate(smokePrefab);
-            skidSmoke[i].Stop();
-
-           
+            skidSmoke[i].Stop();  
         }
+
+        GameObject playerName = Instantiate(playerNamePrefab);
+        playerName.GetComponent<NameUIController>().target = rb.gameObject.transform;
+
+        if (this.GetComponent<AIController>().enabled)
+            playerName.GetComponent<Text>().text = aiNames[Random.Range(0, aiNames.Length)];
+        else
+            playerName.GetComponent<Text>().text = "Human";
+        playerName.GetComponent<NameUIController>().carRenderer = carMesh;
     }
 
     public void CalculateEngineSound()
