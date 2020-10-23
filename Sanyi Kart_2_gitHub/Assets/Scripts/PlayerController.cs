@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // if (!RaceMonitor.racing) return;
+       //if (!RaceMonitor.racing) return;
 
         float a = Input.GetAxis("Vertical");
         float s = Input.GetAxis("Horizontal");
