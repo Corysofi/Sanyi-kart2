@@ -18,6 +18,8 @@ public class AIController : MonoBehaviour
     int currentTrackerWpoint = 0;
     public float lookAhead = 12;
     float lastTimeMoving = 0;
+
+    CheckPointManager cpm;
     // Start is called before the first frame update
     void Start()
     {
@@ -76,8 +78,13 @@ public class AIController : MonoBehaviour
 
         if(Time.time > lastTimeMoving + 4)
         {
-            driveScript.rb.gameObject.transform.position = circuit.waypoints[currentTrackerWpoint].transform.position + Vector3.up * 2 + new Vector3(Random.Range(-1,1), 0, Random.Range(-1,1));
-            tracker.transform.position = driveScript.rb.gameObject.transform.position;
+            if (cpm == null)
+                cpm = driveScript.rb.GetComponent<CheckPointManager>();
+
+            driveScript.rb.gameObject.transform.position = cpm.lastCP.transform.position + Vector3.up * 2;
+            driveScript.rb.gameObject.transform.rotation = cpm.lastCP.transform.rotation;
+            //driveScript.rb.gameObject.transform.position = circuit.waypoints[currentTrackerWpoint].transform.position + Vector3.up * 2 + new Vector3(Random.Range(-1,1), 0, Random.Range(-1,1));
+            tracker.transform.position = cpm.lastCP.transform.position;
              
             driveScript.rb.gameObject.layer = 9;
 
