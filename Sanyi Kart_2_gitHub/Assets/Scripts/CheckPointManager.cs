@@ -10,6 +10,7 @@ public class CheckPointManager : MonoBehaviour
     int checkPointCount;
     int nextCheckPoint;
     public GameObject lastCP;
+    public float timeEntered = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class CheckPointManager : MonoBehaviour
             {
                 lastCP = col.gameObject;
                 checkPoint = thisCPNumber;
+                timeEntered = Time.time;
                 if (checkPoint == 0) lap++;
 
                 nextCheckPoint++;

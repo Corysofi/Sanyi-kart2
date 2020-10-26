@@ -61,7 +61,7 @@ public class CheckPointCreator : MonoBehaviour
 
         tracker.transform.Translate(0, 0, 1.0f);
 
-        if (Vector3.Distance(tracker.transform.position, circuit.waypoints[currentTrackerWP].transform.position) < 1)
+        if (Vector3.Distance(tracker.transform.position, circuit.waypoints[currentTrackerWP].transform.position) < 1) // incrementar si da vueltas
         {
             currentTrackerWP++;
             if (currentTrackerWP >= circuit.waypoints.Length)

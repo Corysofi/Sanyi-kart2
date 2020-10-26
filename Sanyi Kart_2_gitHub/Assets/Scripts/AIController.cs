@@ -20,6 +20,7 @@ public class AIController : MonoBehaviour
     float lastTimeMoving = 0;
 
     CheckPointManager cpm;
+    float finishSteer;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +36,7 @@ public class AIController : MonoBehaviour
         tracker.transform.rotation = driveScript.rb.gameObject.transform.rotation;
 
         this.GetComponent<Ghost>().enabled = false;
+        finishSteer = Random.Range(-1.0f, 1.0f);
     }
 
 
@@ -69,6 +71,17 @@ public class AIController : MonoBehaviour
             lastTimeMoving = Time.time;
             return;
         }
+
+        if (cpm == null)
+            cpm = driveScript.rb.GetComponent<CheckPointManager>();
+
+        if(cpm.lap == RaceMonitor.totalLaps + 1)  // el ganador
+        {
+            driveScript.highAccel.Stop();
+            driveScript.Go(0, finishSteer, 0);
+            return;
+        }
+
         ProgressTracker();
         Vector3 localTarget;
         float targetAngle;
@@ -78,8 +91,7 @@ public class AIController : MonoBehaviour
 
         if(Time.time > lastTimeMoving + 4)
         {
-            if (cpm == null)
-                cpm = driveScript.rb.GetComponent<CheckPointManager>();
+            
 
             driveScript.rb.gameObject.transform.position = cpm.lastCP.transform.position + Vector3.up * 2;
             driveScript.rb.gameObject.transform.rotation = cpm.lastCP.transform.rotation;

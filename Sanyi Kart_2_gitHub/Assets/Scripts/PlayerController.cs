@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     float lastTimeMoving = 0;
     Vector3 lastPosition;
     Quaternion lastRotation;
+    CheckPointManager cpm;
+    float finishSteer;
 
     void ResetLayer()
     {
@@ -19,12 +21,25 @@ public class PlayerController : MonoBehaviour
     {
         driveScript = this.GetComponent<Drive>();
         this.GetComponent<Ghost>().enabled = false;
+        lastPosition = driveScript.rb.gameObject.transform.position;
+        lastRotation = driveScript.rb.gameObject.transform.rotation;
+        finishSteer = Random.Range(-1.0f, 1.0f);
     }
 
     // Update is called once per frame
     void Update()
     {
-       //if (!RaceMonitor.racing) return;
+        //if (!RaceMonitor.racing) return;
+
+        if (cpm == null)
+            cpm = driveScript.rb.GetComponent<CheckPointManager>();
+
+        if(cpm.lap == RaceMonitor.totalLaps + 1)
+        {
+            driveScript.highAccel.Stop();
+            driveScript.Go(0, finishSteer, 0);
+            return;
+        }
 
         float a = Input.GetAxis("Vertical");
         float s = Input.GetAxis("Horizontal");
@@ -46,8 +61,10 @@ public class PlayerController : MonoBehaviour
 
         if(Time.time > lastTimeMoving + 4)
         {
-            driveScript.rb.gameObject.transform.position = lastPosition;
-            driveScript.rb.gameObject.transform.rotation = lastRotation;
+            
+
+            driveScript.rb.gameObject.transform.position = cpm.lastCP.transform.position + Vector3.up * 2;
+            driveScript.rb.gameObject.transform.rotation = cpm.lastCP.transform.rotation;
             driveScript.rb.gameObject.layer = 9;
             this.GetComponent<Ghost>().enabled = true;
             Invoke("ResetLayer", 3);
