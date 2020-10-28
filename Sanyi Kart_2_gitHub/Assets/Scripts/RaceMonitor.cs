@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class RaceMonitor : MonoBehaviour
 {
@@ -11,6 +15,8 @@ public class RaceMonitor : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject HUD;
     CheckPointManager[] carsCheckPM;
+    public GameObject[] carPrefabs;
+    public Transform[] spawnPos;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +26,14 @@ public class RaceMonitor : MonoBehaviour
 
         StartCoroutine(PlayCountDown());
         gameOverPanel.SetActive(false);
+
+        foreach(Transform t in spawnPos)
+        {
+            
+            GameObject car = Instantiate(carPrefabs[Random.Range(0, carPrefabs.Length)]);
+            car.transform.position = t.position;
+            car.transform.rotation = t.rotation;
+        }
 
         GameObject[] cars = GameObject.FindGameObjectsWithTag("car");
         carsCheckPM = new CheckPointManager[cars.Length];
@@ -39,6 +53,11 @@ public class RaceMonitor : MonoBehaviour
         racing = true;
     }
 
+    public void RestartLevel()
+    {
+        racing = false;
+        SceneManager.LoadScene("Game");
+    }
     
     void LateUpdate()
     {
