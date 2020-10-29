@@ -30,7 +30,8 @@ public class Drive : MonoBehaviour
     public float maxSpeed = 200;
     public GameObject playerNamePrefab;
     public Renderer carMesh;
-    string[] aiNames = { "Cory", "Eva" };
+    string[] aiNames = { "Kim", "David" };
+    public string networkName = "";
 
 
    
@@ -67,11 +68,20 @@ public class Drive : MonoBehaviour
 
         GameObject playerName = Instantiate(playerNamePrefab);
         playerName.GetComponent<NameUIController>().target = rb.gameObject.transform;
+        // playerName.GetComponent<NameUIController>().playerName.text = "Player Name";           ////////// esta no la tenia
+
+
+
+
 
         if (this.GetComponent<AIController>().enabled)
-            playerName.GetComponent<Text>().text = aiNames[Random.Range(0, aiNames.Length)];
+            if (networkName != "")
+                playerName.GetComponent<Text>().text = networkName;
+            else
+                playerName.GetComponent<Text>().text = aiNames[Random.Range(0, aiNames.Length)];
         else
-            playerName.GetComponent<Text>().text = "Human";
+            playerName.GetComponent<Text>().text = PlayerPrefs.GetString("PlayerName");  // tenia human
+
         playerName.GetComponent<NameUIController>().carRenderer = carMesh;
     }
 

@@ -23,6 +23,6 @@ public class DisplayLeaderBoard : MonoBehaviour
         if(places.Count > 0)
         first.text = places[0];
         if(places.Count > 1)
-        second.text = places[1];
+        second.text = places[1]; 
     }
 }
